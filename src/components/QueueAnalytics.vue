@@ -11,9 +11,23 @@
                 <p class="text-2xl">{{ stats.totalUsers }}</p>
             </div>
             <div class="stat-card p-4 bg-white rounded shadow">
-                <h3>Completion Rate</h3>
-                <p class="text-2xl">{{ stats.completionRate }}%</p>
+                <h3>Estimated Time Remaining</h3>
+                <p class="text-2xl">{{ calculateEstimatedTime() }}</p>
             </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div v-if="stats.peopleAhead !== undefined" class="mb-8">
+            <h3 class="text-lg font-bold mb-2">Your Progress</h3>
+            <div class="bg-gray-200 rounded-full h-4">
+                <div class="bg-blue-600 h-4 rounded-full transition-all duration-500" :style="{
+                    width: `${calculateProgress()}%`
+                }"></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">
+                {{ stats.peopleAhead }} people ahead of you
+                (Started with {{ stats.totalPeopleAtStart }})
+            </p>
         </div>
 
         <!-- Queue List -->
@@ -104,6 +118,21 @@ onUnmounted(() => {
         clearInterval(updateInterval)
     }
 })
+
+const calculateProgress = () => {
+    if (!stats.value.totalPeopleAtStart) return 0
+    const progress = ((stats.value.totalPeopleAtStart - stats.value.peopleAhead) / stats.value.totalPeopleAtStart) * 100
+    return Math.round(progress)
+}
+
+const calculateEstimatedTime = () => {
+    if (!stats.value.peopleAhead) return 'N/A'
+    const minutes = stats.value.peopleAhead * 5 // Assuming 5 minutes per person
+    if (minutes < 60) return `${minutes} min`
+    const hours = Math.floor(minutes / 60)
+    const remainingMinutes = minutes % 60
+    return `${hours}h ${remainingMinutes}m`
+}
 </script>
 
 <style scoped>

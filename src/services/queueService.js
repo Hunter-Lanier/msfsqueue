@@ -70,7 +70,14 @@ export const getQueueStats = async () => {
         throw new Error('Failed to get queue statistics')
     }
 
-    return response.json()
+    const data = await response.json()
+    const userId = localStorage.getItem('queueUserId')
+    if (userId) {
+        const userStatus = await getQueueStatus(userId)
+        data.peopleAhead = userStatus.position - 1
+        data.totalPeopleAtStart = data.peopleAhead + 1
+    }
+    return data
 }
 
 export const getQueueList = async () => {
