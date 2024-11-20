@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:3000/api' : '/api'
+const API_BASE_URL = '/api'
 
 export const joinQueue = async ({ contactInfo, captchaToken }) => {
     console.log('Sending join request...')
