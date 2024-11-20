@@ -1,24 +1,33 @@
 const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:3000/api' : '/api'
 
-export const joinQueue = async ({ contactInfo, captchaToken, fcmToken }) => {
-    const response = await fetch(`${API_BASE_URL}/queue`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            contactInfo,
-            captchaToken,
-            fcmToken
-        }),
-    })
+export const joinQueue = async ({ contactInfo, captchaToken }) => {
+    console.log('Sending join request...')
+    try {
+        const response = await fetch(`${API_BASE_URL}/queue`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                contactInfo,
+                captchaToken
+            }),
+        })
 
-    if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || 'Failed to join queue')
+        console.log('Response status:', response.status)
+
+        if (!response.ok) {
+            const errorData = await response.json()
+            throw new Error(errorData.message || 'Failed to join queue')
+        }
+
+        const data = await response.json()
+        console.log('Join queue response data:', data)
+        return data
+    } catch (error) {
+        console.error('Join queue error:', error)
+        throw error
     }
-
-    return response.json()
 }
 
 export const getQueueStatus = async (userId) => {

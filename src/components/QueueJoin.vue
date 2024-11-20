@@ -72,10 +72,17 @@ const handleJoin = async () => {
 
     loading.value = true
     try {
+        console.log('Attempting to join queue...')
         const response = await joinQueue({
             contactInfo: contactInfo.value,
             captchaToken: captchaToken.value
         })
+        console.log('Join queue response:', response)
+
+        if (!response.id) {
+            throw new Error('Invalid response from server')
+        }
+
         localStorage.setItem('queueUserId', response.id)
         router.push('/status')
     } catch (error) {
