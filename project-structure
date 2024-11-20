@@ -1,0 +1,12 @@
+msfs-queue/
+├── src/
+│   ├── components/
+│   │   ├── QueueJoin.vue
+│   │   ├── QueueStatus.vue
+│   │   └── QueueCheckIn.vue
+│   ├── services/
+│   │   └── queueService.js
+│   ├── App.vue
+│   └── main.js
+└── api/
+    └── queue.js 
