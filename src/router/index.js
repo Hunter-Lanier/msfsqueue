@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import QueueJoin from '../components/QueueJoin.vue'
 import QueueStatus from '../components/QueueStatus.vue'
+import AdminQueue from '../components/AdminQueue.vue'
 
 const routes = [
     {
@@ -20,6 +21,11 @@ const routes = [
                 next()
             }
         }
+    },
+    {
+        path: '/admin',
+        name: 'admin',
+        component: AdminQueue
     }
 ]
 
